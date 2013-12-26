@@ -1,0 +1,85 @@
+<config>
+	<com>
+		<olympe>
+			<ftpfilter>
+				<input>
+					<proftp>
+						<logfile>/var/log/proftp/transfer.log</logfile>
+						<format> /ftp/(.*?) (?:a|b) _ i r ([^\s]+) ftp 0 \* c$</format>
+					</proftp>
+					<sftp>
+						<logfile>/var/log/user.log</logfile>
+						<format>close "/sftp/(.*?)" bytes read 0 written [0-9]+$</format>
+					</sftp>
+					<skip_files_larger_than>1048576</skip_files_larger_than>
+					<stop_on_log_rotate>false</stop_on_log_rotate>
+					<start_from_beginning>true</start_from_beginning>
+					<user_root_dir>/chroot/</user_root_dir>
+				</input>
+				
+				<output>
+					<file>/var/log/xxx.log</file>
+					<mysql>
+						<host>xxx</host>
+						<port>3306</port>
+						<db>xxx</db>
+						<user>xxx</user>
+						<pass>xxx</pass>
+						<sql>INSERT INTO table (file, filter, user) VALUES ('{FILE}', '{FILTER}', '{USER}')</sql>
+					</mysql>
+					<api>
+						<url>/xxx?file={FILE}&amp;filter={FILTER}&amp;user={USER}</url>
+						<token>xxx:01234567890123456789012345678901</token>
+					</api>
+				</output>
+		
+				<filters>
+		
+					<!-- // BANNED FILES // -->
+					<banned_filename_filter>
+						<name>Banned files evil</name>
+						<match>virus\.exe|evil_folder/file</match>
+					</banned_filename_filter>
+					
+					<banned_filename_filter>
+						<name>Banned files very bad</name>
+						<match>very_bad_regex_file</match>
+					</banned_filename_filter>
+					
+					<!-- // SUSPECT FILES // -->
+					<suspect_filename_filter>
+						<name>Suspect files hacker</name>
+						<match>Hacker_[0-9\.]</match>
+					</suspect_filename_filter>
+					
+					<suspect_filename_filter>
+						<name>Suspect files X</name>
+						<match>(Naked|Horny)\.png</match>
+					</suspect_filename_filter>
+					
+					<!-- // BANNED CONTENT // -->
+					<banned_content_filter>
+						<name>Banned content 1</name>
+						<match>iStealer [0-9\.]|&lt;html&gt;</match>
+					</banned_content_filter>
+					
+					<banned_content_filter>
+						<name>Banned content 2</name>
+						<match>some other regex</match>
+					</banned_content_filter>
+					
+					<!-- // SUSPECT CONTENT // -->
+					<suspect_content_filter>
+						<name>Suspect content proxy</name>
+						<match>define\('GLYPE_ROOT|proxify_</match>
+					</suspect_content_filter>
+					
+					<suspect_content_filter>
+						<name>Suspect content visa</name>
+						<match>www\.visaeurope\.(com|fr|ch|be)|Verified by Visa</match>
+					</suspect_content_filter>
+				</filters>
+			</ftpfilter>
+		</olympe>
+	</com>
+</config>

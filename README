@@ -1,0 +1,10 @@
+Scan log files and log matching entries.
+
+This code is designed to be used as a FTP Filter 
+to detect phishing and other harmful files.
+
+However, this code can be used for any purposes
+that requires matching log files (monitoring,...)
+
+To compile from Windows, run "compile ftpfilter"
+with java 7 and proper classpath.
